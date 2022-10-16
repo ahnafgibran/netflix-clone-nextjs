@@ -3,11 +3,14 @@ import { BellIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import useAuth from '../hooks/useAuth'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRecoilState } from 'recoil'
+import { modalState } from '../atoms/modalAtom'
 // import BasicMenu from './BasicMenu'
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const {logout} = useAuth()
+  const [showModal, setShowModal] = useRecoilState(modalState)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +36,7 @@ function Header() {
           width={100}
           height={100}
           className="cursor-pointer object-contain"
+          onClick={() => setShowModal(true)}
         />
 
         {/* <BasicMenu /> */}

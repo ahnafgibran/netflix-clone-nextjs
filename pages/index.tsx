@@ -1,18 +1,19 @@
 // import { getProducts, Product } from '@stripe/firestore-stripe-payments'
-import Head from 'next/head'
-import { useRecoilValue } from 'recoil'
-import { modalState, movieState } from '../atoms/modalAtom'
-import Banner from '../components/Banner'
-import Header from '../components/Header'
+import Head from "next/head"
+import { useRecoilValue } from "recoil"
+import { modalState, movieState } from "../atoms/modalAtom"
+import Banner from "../components/Banner"
+import Header from "../components/Header"
+import Modal from "../components/Modal"
 // import Modal from '../components/Modal'
 // import Plans from '../components/Plans'
-import Row from '../components/Row'
-import useAuth from '../hooks/useAuth'
+import Row from "../components/Row"
+import useAuth from "../hooks/useAuth"
 // import useList from '../hooks/useList'
 // import useSubscription from '../hooks/useSubscription'
 // import payments from '../lib/stripe'
-import { Movie } from '../typings'
-import requests from '../utils/requests'
+import { Movie } from "../typings"
+import requests from "../utils/requests"
 
 interface Props {
   netflixOriginals: Movie[]
@@ -35,8 +36,8 @@ const Home = ({
   romanceMovies,
   topRated,
   trendingNow,
-  // products,
-}: Props) => {
+}: // products,
+Props) => {
   const { user, loading } = useAuth()
   // const subscription = useSubscription(user)
   const showModal = useRecoilValue(modalState)
@@ -46,16 +47,21 @@ const Home = ({
   // if (loading || subscription === null) return null
 
   // if (!subscription) return <Plans products={products} />
+  if (loading) {
+    return
+  }
 
   return (
     <div
+      // className={`relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh] `}
+      // className={`relative bg-gradient-to-b from-gray-900/10 to-[#010511] `}
       className={`relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh] ${
-        showModal && '!h-screen overflow-hidden'
+        showModal && "!h-auto"
       }`}
     >
       <Head>
         <title>
-          {movie?.title || movie?.original_name || 'Home'} - Netflix
+          {movie?.title || movie?.original_name || "Home"} - Netflix
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -78,7 +84,7 @@ const Home = ({
           <Row title="Documentaries" movies={documentaries} />
         </section>
       </main>
-      {/* {showModal && <Modal />} */}
+      {showModal && <Modal />}
     </div>
   )
 }
