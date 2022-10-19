@@ -13,7 +13,7 @@ import {
   HandThumbUpIcon,
   SpeakerXMarkIcon,
   SpeakerWaveIcon,
-} from '@heroicons/react/24/outline'
+} from "@heroicons/react/24/outline"
 
 function Modal() {
   const [showModal, setShowModal] = useRecoilState(modalState)
@@ -58,7 +58,6 @@ function Modal() {
     //   await deleteDoc(
     //     doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!)
     //   )
-
     //   toast(
     //     `${movie?.title || movie?.original_name} has been removed from My List`,
     //     {
@@ -73,7 +72,6 @@ function Modal() {
     //       ...movie,
     //     }
     //   )
-
     //   toast(
     //     `${movie?.title || movie?.original_name} has been added to My List.`,
     //     {
@@ -116,14 +114,9 @@ function Modal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className='h-full w-[60%]'>
+                {/* <Dialog.Panel className=' w-full md:w-[70%] lg:w-[60%]'> */}
+                <Dialog.Panel className="fixed h-screen py-7  overflow-hidden overflow-y-scroll scrollbar-hide left-0 right-0 z-50 mx-auto lg:w-[60%] max-w-5xl  rounded-md">
                   <Toaster position="bottom-center" />
-                  <button
-                    className="modalButton absolute right-5 top-5 !z-40 h-9 w-9 bg-[#181818] hover:bg-[#181818]"
-                    onClick={closeModal}
-                  >
-                    <IoClose className="h-6 w-6" />
-                  </button>
 
                   <div className="relative pt-[56.25%]">
                     <ReactPlayer
@@ -134,6 +127,12 @@ function Modal() {
                       playing
                       muted={muted}
                     />
+                    <button
+                      className="modalButton absolute right-5 top-7 !z-40 h-9 w-9 bg-[#181818] hover:bg-[#181818]"
+                      onClick={closeModal}
+                    >
+                      <IoClose className="h-6 w-6" />
+                    </button>
                     <div className="absolute bottom-10 flex w-full items-center justify-between px-10">
                       <div className="flex space-x-2">
                         {/* <button className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]">
