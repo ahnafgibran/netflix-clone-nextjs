@@ -118,12 +118,12 @@ function Modal() {
                 <Dialog.Panel className="fixed h-screen py-7  overflow-hidden overflow-y-scroll scrollbar-hide left-0 right-0 z-50 mx-auto lg:w-[60%] max-w-5xl  rounded-md">
                   <Toaster position="bottom-center" />
 
-                  <div className="relative pt-[56.25%]">
+                  <div className="relative pt-[56.25%] rounded-md overflow-hidden">
                     <ReactPlayer
                       url={`https://www.youtube.com/watch?v=${trailer}`}
                       width="100%"
                       height="100%"
-                      style={{ position: "absolute", top: "0", left: "0" }}
+                      style={{ position: "absolute", top: "0", left: "0"}}
                       playing
                       muted={muted}
                     />
@@ -181,19 +181,19 @@ function Modal() {
                       <div className="flex flex-col gap-x-10 gap-y-4 font-light md:flex-row">
                         <p className="w-5/6">{movie?.overview}</p>
                         <div className="flex flex-col space-y-3 text-sm">
-                          <div>
+                          <div >
                             <span className="text-[gray]">Genres:</span>{" "}
                             {genres.map((genre) => genre.name).join(", ")}
                           </div>
 
-                          <div>
+                          <div >
                             <span className="text-[gray]">
                               Original language:
                             </span>{" "}
                             {movie?.original_language}
                           </div>
 
-                          <div>
+                          <div >
                             <span className="text-[gray]">Total votes:</span>{" "}
                             {movie?.vote_count}
                           </div>
