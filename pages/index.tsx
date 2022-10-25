@@ -1,17 +1,17 @@
 // import { getProducts, Product } from '@stripe/firestore-stripe-payments'
+import { getProducts, Product } from "@stripe/firestore-stripe-payments"
 import Head from "next/head"
 import { useRecoilValue } from "recoil"
 import { modalState, movieState } from "../atoms/modalAtom"
 import Banner from "../components/Banner"
 import Header from "../components/Header"
 import Modal from "../components/Modal"
-// import Modal from '../components/Modal'
-// import Plans from '../components/Plans'
+import Plans from "../components/Plans"
 import Row from "../components/Row"
 import useAuth from "../hooks/useAuth"
 // import useList from '../hooks/useList'
 // import useSubscription from '../hooks/useSubscription'
-// import payments from '../lib/stripe'
+import payments from '../lib/stripe'
 import { Movie } from "../typings"
 import requests from "../utils/requests"
 
@@ -24,7 +24,7 @@ interface Props {
   horrorMovies: Movie[]
   romanceMovies: Movie[]
   documentaries: Movie[]
-  // products: Product[]
+  products: Product[]
 }
 
 const Home = ({
@@ -36,25 +36,25 @@ const Home = ({
   romanceMovies,
   topRated,
   trendingNow,
-}: // products,
+  products
+}: 
 Props) => {
   const { user, loading } = useAuth()
   // const subscription = useSubscription(user)
+  const subscription = false
   const showModal = useRecoilValue(modalState)
   const movie = useRecoilValue(movieState)
   // const list = useList(user?.uid)
 
-  // if (loading || subscription === null) return null
+  if (loading || subscription === null) return null
 
-  // if (!subscription) return <Plans products={products} />
+  if (!subscription) return <Plans products={products} />
   if (loading) {
     return
   }
 
   return (
     <div
-      // className={`relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh] `}
-      // className={`relative bg-gradient-to-b from-gray-900/10 to-[#010511] `}
       className={`relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh] ${
         showModal && "!h-auto"
       }`}
@@ -92,12 +92,12 @@ Props) => {
 export default Home
 
 export const getServerSideProps = async () => {
-  // const products = await getProducts(payments, {
-  //   includePrices: true,
-  //   activeOnly: true,
-  // })
-  //   .then((res) => res)
-  //   .catch((error) => console.log(error.message))
+  const products = await getProducts(payments, {
+    includePrices: true,
+    activeOnly: true,
+  })
+    .then((res) => res)
+    .catch((error) => console.log(error.message))
 
   const [
     netflixOriginals,
@@ -129,7 +129,7 @@ export const getServerSideProps = async () => {
       horrorMovies: horrorMovies.results,
       romanceMovies: romanceMovies.results,
       documentaries: documentaries.results,
-      // products,
+      products,
     },
   }
 }

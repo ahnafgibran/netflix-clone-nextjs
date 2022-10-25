@@ -4,13 +4,12 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState } from 'react'
 import useAuth from '../hooks/useAuth'
-// import { loadCheckout } from '../lib/stripe'
+import { loadCheckout } from '../lib/stripe'
 import Table from './Table'
 import Loader from './Loader'
 
 interface Props {
-  // products: Product[]
-  products: any
+  products: Product[]
 }
 
 function Plans({ products }: Props) {
@@ -23,7 +22,9 @@ function Plans({ products }: Props) {
   const subscribeToPlan = () => {
     if (!user) return
 
-    // loadCheckout(selectedPlan?.prices[0].id!)
+    // console.log(selectedPlan?.prices[0].id!)
+
+    loadCheckout(selectedPlan?.prices[0].id!)
     setBillingLoading(true)
   }
 
@@ -39,7 +40,7 @@ function Plans({ products }: Props) {
             src="https://rb.gy/ulxxee"
             alt="Netflix"
             width={150}
-            height={90}
+            // height={90}
             className="cursor-pointer object-contain"
           />
         </Link>
@@ -72,7 +73,7 @@ function Plans({ products }: Props) {
 
         <div className="mt-4 flex flex-col space-y-4">
           <div className="flex w-full items-center justify-end self-end md:w-3/5">
-            {/* {products.map((product) => (
+            {products.map((product) => (
               <div
                 className={`planBox ${
                   selectedPlan?.id === product.id ? 'opacity-100' : 'opacity-60'
@@ -82,10 +83,10 @@ function Plans({ products }: Props) {
               >
                 {product.name}
               </div>
-            ))} */}
+            ))}
           </div>
 
-          {/* <Table products={products} selectedPlan={selectedPlan} /> */}
+          <Table products={products} selectedPlan={selectedPlan} />
 
           <button
             disabled={!selectedPlan || isBillingLoading}
