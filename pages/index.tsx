@@ -10,7 +10,7 @@ import Plans from "../components/Plans"
 import Row from "../components/Row"
 import useAuth from "../hooks/useAuth"
 // import useList from '../hooks/useList'
-// import useSubscription from '../hooks/useSubscription'
+import useSubscription from '../hooks/useSubscription'
 import payments from '../lib/stripe'
 import { Movie } from "../typings"
 import requests from "../utils/requests"
@@ -40,18 +40,19 @@ const Home = ({
 }: 
 Props) => {
   const { user, loading } = useAuth()
-  // const subscription = useSubscription(user)
-  const subscription = false
+  const subscription = useSubscription(user)
   const showModal = useRecoilValue(modalState)
   const movie = useRecoilValue(movieState)
   // const list = useList(user?.uid)
 
   if (loading || subscription === null) return null
+  console.log('subscription', subscription)
 
   if (!subscription) return <Plans products={products} />
   if (loading) {
     return
   }
+
 
   return (
     <div

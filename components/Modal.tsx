@@ -126,6 +126,7 @@ function Modal() {
                       style={{ position: "absolute", top: "0", left: "0"}}
                       playing
                       muted={muted}
+                      
                     />
                     <button
                       className="modalButton absolute right-5 top-7 !z-40 h-9 w-9 bg-[#181818] hover:bg-[#181818]"
