@@ -1,12 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, useState, useRef, useEffect } from "react"
-import { Toaster } from "react-hot-toast"
 import { useRecoilState } from "recoil"
 import { modalState, movieState } from "../atoms/modalAtom"
 import { IoClose } from "react-icons/io5"
 import ReactPlayer from "react-player/lazy"
 import { FaPlay } from "react-icons/fa"
-import { Element, Genre } from "../typings"
+import { Element, Genre, Movie } from "../typings"
 import {
   CheckIcon,
   PlusIcon,
@@ -14,6 +13,28 @@ import {
   SpeakerXMarkIcon,
   SpeakerWaveIcon,
 } from "@heroicons/react/24/outline"
+import toast, { Toaster } from 'react-hot-toast'
+import {
+  collection,
+  deleteDoc,
+  doc,
+  DocumentData,
+  onSnapshot,
+  setDoc,
+} from 'firebase/firestore'
+import { db } from "../firebase"
+import useAuth from "../hooks/useAuth"
+
+
+const toastStyle = {
+  background: 'white',
+  color: 'black',
+  fontWeight: 'bold',
+  fontSize: '16px',
+  padding: '15px',
+  borderRadius: '9999px',
+  maxWidth: '1000px',
+}
 
 function Modal() {
   const [showModal, setShowModal] = useRecoilState(modalState)
@@ -22,6 +43,8 @@ function Modal() {
   const [trailer, setTrailer] = useState("")
   const [genres, setGenres] = useState<Genre[]>([])
   const [addedToList, setAddedToList] = useState(false)
+  const { user } = useAuth()
+  const [movies, setMovies] = useState<DocumentData[] | Movie[]>([])
   let initialModalRef = useRef(null)
 
   useEffect(() => {
@@ -36,7 +59,6 @@ function Modal() {
         }&language=en-US&append_to_response=videos`
       ).then((response) => response.json())
       if (data?.videos) {
-        // console.log(data.videos)
         setTrailer(
           data.videos.results.filter(
             (element: Element) => element.type === "Trailer"
@@ -51,36 +73,62 @@ function Modal() {
     fetchMovie()
   }, [movie])
 
-  const closeModal = () => setShowModal(false)
+  const closeModal = () => {
+    setShowModal(false)
+    setMovie(null)
+    toast.dismiss()
+  }
+
+  // Find all the movies in the user's list
+  useEffect(() => {
+    if (user) {
+      return onSnapshot(
+        collection(db, 'customers', user.uid, 'myList'),
+        (snapshot) => setMovies(snapshot.docs)
+      )
+    }
+  }, [db, movie?.id])
+
+  // Check if the movie is already in the user's list
+  useEffect(
+    () =>
+      setAddedToList(
+        movies.findIndex((result) => result.data().id === movie?.id) !== -1
+      ),
+    [movies]
+  )
 
   const handleList = async () => {
-    // if (addedToList) {
-    //   await deleteDoc(
-    //     doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!)
-    //   )
-    //   toast(
-    //     `${movie?.title || movie?.original_name} has been removed from My List`,
-    //     {
-    //       duration: 8000,
-    //       style: toastStyle,
-    //     }
-    //   )
-    // } else {
-    //   await setDoc(
-    //     doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!),
-    //     {
-    //       ...movie,
-    //     }
-    //   )
-    //   toast(
-    //     `${movie?.title || movie?.original_name} has been added to My List.`,
-    //     {
-    //       duration: 8000,
-    //       style: toastStyle,
-    //     }
-    //   )
-    // }
+    if (addedToList) {
+      await deleteDoc(
+        doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!)
+      )
+
+      toast(
+        `${movie?.title || movie?.original_name} has been removed from My List`,
+        {
+          duration: 8000,
+          style: toastStyle,
+        }
+      )
+    } else {
+      await setDoc(
+        doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!),
+        {
+          ...movie,
+        }
+      )
+
+      toast(
+        `${movie?.title || movie?.original_name} has been added to My List.`,
+        {
+          duration: 8000,
+          style: toastStyle,
+        }
+      )
+    }
   }
+
 
   return (
     <>

@@ -17,12 +17,10 @@ function Plans({ products }: Props) {
   const [selectedPlan, setSelectedPlan] = useState<Product | null>(products[2])
   const [isBillingLoading, setBillingLoading] = useState(false)
 
-  console.log(products)
 
   const subscribeToPlan = () => {
     if (!user) return
 
-    // console.log(selectedPlan?.prices[0].id!)
 
     loadCheckout(selectedPlan?.prices[0].id!)
     setBillingLoading(true)

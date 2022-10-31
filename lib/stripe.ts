@@ -11,15 +11,12 @@ const payments = getStripePayments(app, {
 })
 
 const loadCheckout = async (priceId: string) => {
-  console.log(priceId)
   await createCheckoutSession(payments, {
     price: priceId,
     success_url: window.location.origin,
     cancel_url: window.location.origin,
   })
     .then((snapshot) => {
-      console.log("masuk sbapshot")
-      console.log(snapshot)
       window.location.assign(snapshot.url)
     })
     .catch((error) => console.log(error))

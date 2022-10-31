@@ -13,12 +13,6 @@ function useSubscription(user: User | null) {
     if (!user) return
 
     onCurrentUserSubscriptionUpdate(payments, (snapshot) => {
-      console.log(
-        'snapshot'
-      )
-      console.log(
-        snapshot
-      )
       setSubscription(
         snapshot.subscriptions.filter(
           (subscription) =>

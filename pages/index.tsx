@@ -9,7 +9,7 @@ import Modal from "../components/Modal"
 import Plans from "../components/Plans"
 import Row from "../components/Row"
 import useAuth from "../hooks/useAuth"
-// import useList from '../hooks/useList'
+import useList from '../hooks/useList'
 import useSubscription from '../hooks/useSubscription'
 import payments from '../lib/stripe'
 import { Movie } from "../typings"
@@ -43,10 +43,9 @@ Props) => {
   const subscription = useSubscription(user)
   const showModal = useRecoilValue(modalState)
   const movie = useRecoilValue(movieState)
-  // const list = useList(user?.uid)
+  const list = useList(user?.uid)
 
   if (loading || subscription === null) return null
-  console.log('subscription', subscription)
 
   if (!subscription) return <Plans products={products} />
   if (loading) {
@@ -77,7 +76,7 @@ Props) => {
           <Row title="Top Rated" movies={topRated} />
           <Row title="Action Thrillers" movies={actionMovies} />
           {/* My List */}
-          {/* {list.length > 0 && <Row title="My List" movies={list} />} */}
+          {list.length > 0 && <Row title="My List" movies={list} />}
 
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />

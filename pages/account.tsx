@@ -13,14 +13,12 @@ interface Props {
 }
 
 function Account({ products }: Props) {
-  console.log(products)
   const { user, logout, loading } = useAuth()
   const subscription = useSubscription(user)
   const [isBillingLoading, setBillingLoading] = useState(false)
 
   if (loading) return null
 
-  console.log(subscription)
   return (
     <div className="">
       <Head>
